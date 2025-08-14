@@ -1,5 +1,5 @@
 import {useState} from 'react'
-
+import './Login.css'
 
 const Login = () => {
 
@@ -11,7 +11,7 @@ const handleSubmit= async (e: React.FormEvent)=>{
     e.preventDefault();
     setError('')
     try{
-        fetch('http://localhost:5321/api/login',{
+        fetch('http://localhost:3000/api/users/loginUser',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,19 +35,19 @@ const handleSubmit= async (e: React.FormEvent)=>{
             <div className="login-container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Email:</label>
+                    <div className='Inputbox '>
                         <input 
                             type="email" 
                             value={email} 
+                            placeholder="Enter your email"
                             onChange={e => setEmail(e.target.value)} 
                             required 
                         />
                     </div>
-                    <div>
-                        <label>Password:</label>
+                    <div className='Inputbox'> 
                         <input 
                             type="password" 
+                            placeholder="Enter your password"
                             value={password} 
                             onChange={e => setPassword(e.target.value)} 
                             required 

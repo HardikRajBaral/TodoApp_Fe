@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Login.css'
 
 const Login = () => {
@@ -6,12 +7,13 @@ const Login = () => {
 const [email,setEmail] = useState('')
 const [password,setPassword] = useState('')
 const [error,setError] = useState('')
+const navigate = useNavigate()
 
 const handleSubmit= async (e: React.FormEvent)=>{
     e.preventDefault();
     setError('')
     try{
-        fetch('http://localhost:3000/api/users/loginUser',{
+        const res=await fetch('http://localhost:3000/api/users/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,6 +24,11 @@ const handleSubmit= async (e: React.FormEvent)=>{
             if (!res.ok) {
                 throw new Error('Login failed');
             }
+            return res.json();
+        })
+        .then(data=>{
+            localStorage.setItem('token',data.token)
+            navigate('/home')
         })
     }
     catch(err:any){

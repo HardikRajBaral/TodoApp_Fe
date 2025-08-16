@@ -8,42 +8,42 @@ const Singin = () => {
     const [error, setError] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
 
-    const handleSubmit= async (e:React.FormEvent)=>{
-        e.preventDefault();
-        setError('')
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
+    if (password !== confirmPassword) {
+        setError('Passwords do not match');
+        return;
+    }
+
+    try {
+        const res = await fetch('http://localhost:5000/api/users/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+        });
+
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.message || 'Failed to register');
         }
-        try {
-            await fetch('http://localhost:5000/api/users/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, email, password })
 
-            })
-            .then((res=>{
-                if (!res.ok) {
-                    throw new Error('Failed to register');
-                }
-                return res.json();
-            }))
-            .then((data) => {
-                localStorage.setItem('token', data.token);
-                navigate('/login');
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError('An unexpected error occurred');
-                
-            }
+        const data = await res.json();
+
+        localStorage.setItem('token', data.token);
+        navigate('/');
+    } catch (err) {
+        if (err instanceof Error) {
+        setError(err.message);
+        } else {
+        setError('An unexpected error occurred');
         }
     }
+    };
+
     return(
 
         <>

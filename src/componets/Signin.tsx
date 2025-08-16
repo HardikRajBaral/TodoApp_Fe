@@ -2,7 +2,7 @@ import {  useNavigate } from "react-router-dom";
 import './Login.css'
 import { useState } from "react";
 const Singin = () => {
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -22,7 +22,7 @@ const Singin = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, email, password })
+                body: JSON.stringify({ name, email, password })
 
             })
             .then((res=>{
@@ -53,9 +53,9 @@ const Singin = () => {
                 <div className="Inputbox">
                     <input 
                         type="text"
-                        value={username}
+                        value={name}
                         placeholder="Enter your username"
-                        onChange={(e)=>setUsername(e.target.value)}
+                        onChange={(e)=>setName(e.target.value)}
                         required
                     />
                 </div>

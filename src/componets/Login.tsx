@@ -13,7 +13,7 @@ const handleSubmit= async (e: React.FormEvent)=>{
     e.preventDefault();
     setError('')
     try{
-        await fetch('http://localhost:3000/api/users/login',{
+        await fetch('http://localhost:5000/api/users/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const handleSubmit= async (e: React.FormEvent)=>{
 
     return (
         <>
-            <div className="login-container">
+            <div className="container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div className='Inputbox '>
@@ -62,6 +62,7 @@ const handleSubmit= async (e: React.FormEvent)=>{
                     </div>
                     {error && <p className="error">{error}</p>}
                     <button type="submit">Login</button>
+                    <a href="/signup" className='text'>Don't have an account? Sign up</a>
                 </form>
             </div>
         </>

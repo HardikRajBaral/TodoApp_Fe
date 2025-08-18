@@ -1,5 +1,5 @@
 import {  useNavigate } from "react-router-dom";
-import './Login.css'
+import '../assets/css/Login.css';
 import { useState } from "react";
 const Singin = () => {
     const [name, setName] = useState('');

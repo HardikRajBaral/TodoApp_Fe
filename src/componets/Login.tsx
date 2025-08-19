@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import '..assets/css/Login.css'
+import '../assets/css/Login.css'
 
 const Login = () => {
 
@@ -28,7 +28,7 @@ const handleSubmit= async (e: React.FormEvent)=>{
         })
         .then(data=>{
             localStorage.setItem('token',data.token)
-            navigate('/home')
+            navigate('/Notes')
         })
     }
     catch(err:any){

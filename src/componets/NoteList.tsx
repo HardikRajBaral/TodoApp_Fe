@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import '..assets/css/NoteList.css';
+import '../assets/css/Notelist.css';
 import NoteCard from "./NoteCard";
 import type { Note } from "../assets/Types/Notes";
 
@@ -10,8 +10,17 @@ const NoteList= () => {
        
         const fetchNotes=async ()=>{
             try{
-                const res=await fetch('http://localhost:5000/api/todos')
-                const data:Note[]=await res.json();
+                const res=await fetch('http://localhost:5000/api/todos',{
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem("token")}`},
+
+                })
+                if(!res.ok){
+                    throw new Error(`Error:${res.status}`);
+                }
+                const data:Note[]=await res.json()
                 setNotes(data);
             }
             catch(err){

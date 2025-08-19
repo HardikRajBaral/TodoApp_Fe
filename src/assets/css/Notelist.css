@@ -1,24 +1,45 @@
-.notes-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 notes per row */
-  gap: 16px;
-  padding: 16px;
+.note-list-container {
+  height: fit-content;
+  width: 80;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-@media (max-width: 1024px) {
-  .notes-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 notes on medium screens */
+.note-list-header {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.note-list-divider {
+  border: none;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
+}
+
+
+/* Optional: make it responsive for smaller screens */
+@media (max-width: 1200px) {
+  .note-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .note-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .notes-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 notes on tablets */
+  .note-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .notes-grid {
-    grid-template-columns: 1fr; /* 1 note per row on small screens */
+  .note-grid {
+    grid-template-columns: 1fr;
   }
 }

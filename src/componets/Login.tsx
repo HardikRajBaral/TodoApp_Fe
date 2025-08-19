@@ -27,7 +27,7 @@ const handleSubmit= async (e: React.FormEvent)=>{
             return res.json();
         })
         .then(data=>{
-            localStorage.setItem('token',data.token)
+            localStorage.setItem("token",data.accesToken)
             navigate('/Notes')
         })
     }

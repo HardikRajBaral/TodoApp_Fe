@@ -1,5 +1,6 @@
 export interface Note {
-  id: string;
+  id: string;          // maps from _id
   title: string;
-  content: string;
+  description: string;
+  duedate: string;     // ISO date string
 }

@@ -6,8 +6,11 @@ import type { Note } from "../assets/Types/Notes";
 const NoteList = () => {
   const [notes, setNotes] = useState<Note[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [duedate, setDueDate] = useState('')
 
-  useEffect(() => {
     const fetchNotes = async () => {
       try {
         const res = await fetch('http://localhost:5000/api/todos', {
@@ -35,20 +38,98 @@ const NoteList = () => {
         setIsLoading(false)
       }
     }
-
+  useEffect(() => {
     fetchNotes()
   }, [])
 
-  if (isLoading) return <div style={{ textAlign: 'center' }}>Loading...</div>
-  if (notes.length === 0) return <div style={{ textAlign: 'center' }}>No notes available</div>
-
+  
+  const handleSubmit= async(e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try{
+      const res=await fetch ('http://localhost:5000/api/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          duedate
+        })
+      })
+      if (!res.ok) throw new Error(`Error: ${res.status}`)
+      fetchNotes()
+      }catch (err) {
+      console.error('Failed to create note:', err)
+    } finally {
+      setIsOpen(false)
+      setTitle('')
+      setDescription('')
+      setDueDate('')
+    }
+  }
   return (
     <div className="note-list-container">
       <h1 className="note-list-header">Todos</h1>
+
       <hr className="note-list-divider" />
       <div className="note-grid">
-        {notes.map(note => <NoteCard key={note.id} note={note} />)}
+        <div className="note-grid">
+          {isLoading ? (
+            <p style={{ textAlign: 'center' }}>Loading...</p>
+          ) : notes.length === 0 ? (
+            <div style={{ textAlign: 'center' }}>No notes available</div>
+          ) : (
+            notes.map(note => <NoteCard key={note.id} note={note} />)
+          )}
+        </div>
+
       </div>
+      <div>
+        <button className="add-todo-button" onClick={()=>setIsOpen(true)}>+</button>
+      </div>
+      {isOpen && (
+        <div className="form-overlay">
+          <div className="form">
+            <h2 className="form-header"> Todo</h2>
+            <form onSubmit={handleSubmit}>
+              <input 
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+                className="form-input"
+                required
+              />
+              <textarea 
+                placeholder="Description"
+                value={description}
+                onChange={(e)=> setDescription(e.target.value)}
+                className="form-textarea"
+                required
+              />
+              <input 
+                type="date"
+                value={duedate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="form-input"
+                required
+              />
+              <button
+                type="button"
+                className="form-close-button"
+                onClick={() => setIsOpen(false)}
+              >X</button>
+              <button 
+              type="submit"
+               className="form-button"
+               >Save</button>
+            </form>
+
+          </div>
+        </div>
+      )}
     </div>
   )
 }

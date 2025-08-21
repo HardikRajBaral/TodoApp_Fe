@@ -39,32 +39,35 @@ const handleSubmit= async (e: React.FormEvent)=>{
 
     return (
         <>
-            <div className="container">
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className='Inputbox '>
-                        <input 
-                            type="email" 
-                            value={email} 
-                            placeholder="Enter your email"
-                            onChange={e => setEmail(e.target.value)} 
-                            required 
-                        />
-                    </div>
-                    <div className='Inputbox'> 
-                        <input 
-                            type="password" 
-                            placeholder="Enter your password"
-                            value={password} 
-                            onChange={e => setPassword(e.target.value)} 
-                            required 
-                        />
-                    </div>
-                    {error && <p className="error">{error}</p>}
-                    <button type="submit">Login</button>
-                    <a href="/signup" className='text'>Don't have an account? Sign up</a>
-                </form>
-            </div>
+          <div className='wrapper'>
+                <div className="container">
+                    <h2>Login</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className='Inputbox '>
+                            <input 
+                                type="email" 
+                                value={email} 
+                                placeholder="Enter your email"
+                                onChange={e => setEmail(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        <div className='Inputbox'> 
+                            <input 
+                                type="password" 
+                                placeholder="Enter your password"
+                                value={password} 
+                                onChange={e => setPassword(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        {error && <p className="error">{error}</p>}
+                        <button type="submit">Login</button>
+                        <a href="/signup" className='text'>Don't have an account? Sign up</a>
+                    </form>
+                </div>
+            
+          </div>
         </>
 
     )

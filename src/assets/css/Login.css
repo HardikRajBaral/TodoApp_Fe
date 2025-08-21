@@ -1,4 +1,4 @@
-body {
+.wrapper {
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -9,14 +9,7 @@ body {
   font-family: 'Inter', Arial, sans-serif;
 }
 
-#root {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  width: 100%;
-}
+
 
 .container {
   width: 400px;

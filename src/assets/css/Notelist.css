@@ -1,8 +1,12 @@
+
 .note-list-container {
+  min-height: 100vh;
+  background: #d6d7d8;
   height: fit-content;
-  width: 80;
   margin: 0 auto;
   padding: 20px;
+  font-family: 'Inter', Arial, sans-serif;
+
 }
 
 .note-list-header {

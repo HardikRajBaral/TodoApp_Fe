@@ -47,7 +47,8 @@ const Singin = () => {
     return(
 
         <>
-        <div className="container">
+        <div className='wrapper'>
+            <div className="container">
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
                 <div className="Inputbox">
@@ -91,6 +92,7 @@ const Singin = () => {
                 {error && <p className="error">{error}</p>}  
                 <button type="submit">Register</button>
             </form>
+        </div>
         </div>
         </>
     )

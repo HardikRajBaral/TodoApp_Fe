@@ -69,6 +69,21 @@ const NoteList = () => {
       setDueDate('')
     }
   }
+  const handleDelete = async (id: string) => {
+  try {
+    const res = await fetch(`http://localhost:5000/api/todos/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (!res.ok) throw new Error(`Error: ${res.status}`);
+    fetchNotes(); // refresh after delete
+  } catch (err) {
+    console.error("Failed to delete note:", err);
+  }
+  };
+
   return (
     <div className="note-list-container">
       <h1 className="note-list-header">Todos</h1>
@@ -81,7 +96,7 @@ const NoteList = () => {
           ) : notes.length === 0 ? (
             <div style={{ textAlign: 'center' }}>No notes available</div>
           ) : (
-            notes.map(note => <NoteCard key={note.id} note={note} />)
+            notes.map(note => <NoteCard key={note.id} note={note} onDelete={handleDelete} />)
           )}
         </div>
 

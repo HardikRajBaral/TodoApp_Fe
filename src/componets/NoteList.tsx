@@ -10,6 +10,7 @@ const NoteList = () => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [duedate, setDueDate] = useState('')
+  const [editNote, setEditNote] = useState<Note | null>(null);
 
     const fetchNotes = async () => {
       try {
@@ -46,7 +47,23 @@ const NoteList = () => {
   const handleSubmit= async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try{
-      const res=await fetch ('http://localhost:5000/api/todos', {
+      if(editNote){
+        const res=await fetch (`http://localhost:5000/api/todos/${editNote.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          duedate
+        })
+      })
+      if (!res.ok) throw new Error(`Error: ${res.status}`)
+      }
+      else{
+        const res=await fetch ('http://localhost:5000/api/todos/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,14 +76,16 @@ const NoteList = () => {
         })
       })
       if (!res.ok) throw new Error(`Error: ${res.status}`)
-      fetchNotes()
-      }catch (err) {
+      }
+    fetchNotes();
+    }catch (err) {
       console.error('Failed to create note:', err)
-    } finally {
+    }finally {
       setIsOpen(false)
       setTitle('')
       setDescription('')
       setDueDate('')
+      setEditNote(null);
     }
   }
   const handleDelete = async (id: string) => {
@@ -84,6 +103,14 @@ const NoteList = () => {
   }
   };
 
+  const handleEdit = (note: Note) => {
+    setEditNote(note);
+    setTitle(note.title);
+    setDescription(note.description);
+    setDueDate(note.duedate.split('T')[0]); // format date for input
+    setIsOpen(true);
+  };
+
   return (
     <div className="note-list-container">
       <h1 className="note-list-header">Todos</h1>
@@ -96,7 +123,7 @@ const NoteList = () => {
           ) : notes.length === 0 ? (
             <div style={{ textAlign: 'center' }}>No notes available</div>
           ) : (
-            notes.map(note => <NoteCard key={note.id} note={note} onDelete={handleDelete} />)
+            notes.map(note => <NoteCard key={note.id} note={note} onDelete={handleDelete} onEdit={handleEdit} />)
           )}
         </div>
 
@@ -107,7 +134,7 @@ const NoteList = () => {
       {isOpen && (
         <div className="form-overlay">
           <div className="form">
-            <h2 className="form-header"> Todo</h2>
+            <h2 className="form-header">{editNote?"Update Note":"New Note"}</h2>
             <form onSubmit={handleSubmit}>
               <input 
                 type="text"
@@ -134,12 +161,18 @@ const NoteList = () => {
               <button
                 type="button"
                 className="form-close-button"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  setEditNote(null);
+                  setTitle('');
+                  setDescription('');
+                  setDueDate(''); 
+                }}
               >X</button>
               <button 
               type="submit"
                className="form-button"
-               >Save</button>
+               >{editNote?"Update":"Save"}</button>
             </form>
 
           </div>
